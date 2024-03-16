@@ -42,3 +42,22 @@ jobs:
         with:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
+  deploy_to_azure:
+    runs-on: ubuntu-latest
+    name: Build and Deploy to Azure
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.apply.outputs.swa_api_key }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "." # App source code path
+          ###### End of Repository/Build Configurations ######
