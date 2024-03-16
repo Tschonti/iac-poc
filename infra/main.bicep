@@ -10,7 +10,6 @@ resource apiManagementInstance 'Microsoft.ApiManagement/service@2020-12-01' = {
     name: 'Consumption'
   }
   properties: {
-    virtualNetworkType: 'None'
     publisherEmail: 'feketesamu@gmail.com'
     publisherName: 'feketesamu'
   }
@@ -28,7 +27,7 @@ resource api 'Microsoft.ApiManagement/service/apis@2019-12-01' = {
   }
 }
 
-resource symbolicname 'Microsoft.ApiManagement/service/apis/operations@2023-05-01-preview' = {
+resource getevent 'Microsoft.ApiManagement/service/apis/operations@2023-05-01-preview' = {
   name: 'get-one-event'
   parent: api
   properties: {
@@ -54,20 +53,31 @@ resource symbolicname 'Microsoft.ApiManagement/service/apis/operations@2023-05-0
       }
     ]
     policies: '''
-      <outbound>
-          <base />
-          <choose>
-              <when condition="@(context.Response.StatusCode == 200)">
-                  <set-body>@{
-                          var responseBody = context.Response.Body.As<JObject>();
-                          var selectedArray = responseBody["selected"] as JArray;
-                          var first = selectedArray.First() as JObject;
-                          var newResponse = new JObject(new JProperty("event", first["text"]));
-                          return newResponse.ToString();
-                      }</set-body>
-              </when>
-          </choose>
-      </outbound>
+      <policies>
+        <inbound>
+            <base />
+        </inbound>
+        <backend>
+            <base />
+        </backend>
+        <outbound>
+            <base />
+            <choose>
+                <when condition="@(context.Response.StatusCode == 200)">
+                    <set-body>@{
+                            var responseBody = context.Response.Body.As<JObject>();
+                            var selectedArray = responseBody["selected"] as JArray;
+                            var first = selectedArray.First() as JObject;
+                            var newResponse = new JObject(new JProperty("event", first["text"]));
+                            return newResponse.ToString();
+                        }</set-body>
+                </when>
+            </choose>
+        </outbound>
+        <on-error>
+            <base />
+        </on-error>
+      </policies>
     '''
   }
 }
@@ -76,16 +86,18 @@ resource staticwebapp 'Microsoft.Web/staticSites@2022-09-01' = {
   name: 'onthisday-fe'
   location: location
   sku: {
-    name: 'F1'
+    name: 'Free'
     tier: 'Free'
   }
   properties: {
     repositoryToken: github_pat
     buildProperties: {
-      appArtifactLocation: 'build'
-      appLocation: '/'
+      appLocation: '.'
+      appBuildCommand: 'npm run build'
+
     }
     repositoryUrl: 'https://github.com/Tschonti/iac-poc'
+    branch: 'master'
     provider: 'GitHub'
   }
 }

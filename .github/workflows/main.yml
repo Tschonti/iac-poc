@@ -1,0 +1,29 @@
+# name: Deploy to Azure with Terraform
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+
+#   build_and_deploy_job:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Install dependencies
+#         run: npm install
+
+#       - name: Build
+#         run: npm run build
+
+#       - name: Deploy to Azure Static Web App
+#         uses: Azure/static-web-apps-deploy@v1
+#         with:
+#           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_EXAMPLESTATICWEBAPP }}
+#           repo_token: ${{ secrets.GITHUB_TOKEN }}
+#           action: "upload"
+#           app_location: "/"  # Path to your built app artifacts
+#           output_location: "build"  # Path to your built app artifacts
