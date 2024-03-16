@@ -7,6 +7,12 @@ terraform {
       version = ">=3.96.0"
     }
   }
+  cloud {
+    organization = "feketesamu"
+    workspaces {
+      name = "tf-poc"
+    }
+  }
 }
 
 # Configure the Microsoft Azure Provider
