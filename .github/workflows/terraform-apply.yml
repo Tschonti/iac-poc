@@ -45,7 +45,7 @@ jobs:
 
       - name: Output Values
         id: output-values
-        run: echo "::set-output name=swa_api_key::$(terraform output swa_api_key)"
+        run: echo "::set-output name=swa_api_key::$(terraform refresh && terraform output swa_api_key)"
 
   deploy_to_azure:
     needs: terraform
