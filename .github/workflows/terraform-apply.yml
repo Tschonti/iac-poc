@@ -45,7 +45,7 @@ jobs:
 
       - name: Output Values
         id: output-values
-        run: echo "::set-output name=swa_api_key::$(terraform refresh && terraform output swa_api_key)"
+        run: echo "::set-output name=swa_api_key::$(terraform output swa_api_key)"
 
   deploy_to_azure:
     needs: terraform
@@ -60,7 +60,7 @@ jobs:
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ needs.terraform.outputs.output-values.outputs.swa_api_key }}
+          azure_static_web_apps_api_token: ${{ needs.terraform.outputs.apply.outputs.swa_api_key }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######

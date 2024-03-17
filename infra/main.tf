@@ -39,7 +39,7 @@ resource "azurerm_api_management_api" "wm-api" {
   name                  = "onthisday-api"
   resource_group_name   = azurerm_resource_group.tf-rg.name
   api_management_name   = azurerm_api_management.apim.name
-  revision              = "2"
+  revision              = "3"
   display_name          = "On this day API"
   protocols             = ["https"]
   service_url           = "https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/"
