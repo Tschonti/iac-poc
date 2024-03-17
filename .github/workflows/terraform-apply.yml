@@ -43,13 +43,6 @@ jobs:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
 
-      - name: Install jq
-        run: sudo apt-get install -y jq
-      - name: Output Values
-        id: output-values
-        run: |
-          echo 'swa_api_key=$(curl -s --header "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" --header "Content-Type: application/vnd.api+json" "https://app.terraform.io/api/v2/workspaces/${{secrets.TFC_WS_ID}}/current-state-version?include=outputs" | jq -r ".included[] | select(.attributes.name == \"swa_api_key\") | .attributes.value")'
-
   deploy_to_azure:
     needs: terraform
     runs-on: ubuntu-latest
@@ -59,11 +52,15 @@ jobs:
         with:
           submodules: false
           lfs: false
+      - name: Get output value
+        id: output-values
+        run: |
+          echo 'swa_api_key=$(curl -s --header "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" --header "Content-Type: application/vnd.api+json" "https://app.terraform.io/api/v2/workspaces/${{secrets.TFC_WS_ID}}/current-state-version?include=outputs" | jq -r ".included[] | select(.attributes.name == \"swa_api_key\") | .attributes.value")' >> $GITHUB_OUTPUT
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ needs.terraform.outputs.output-values.outputs.swa_api_key }}
+          azure_static_web_apps_api_token: ${{ steps.output-values.outputs.swa_api_key }}
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
