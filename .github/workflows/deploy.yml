@@ -40,7 +40,7 @@ jobs:
 
       - name: Terraform Output
         id: output
-        run: terraform output swa_api_key
+        run: terraform output -raw swa_api_key
 
   deploy_aswa:
     needs: terraform

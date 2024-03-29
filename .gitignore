@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 gh.pat
 /infra/.terraform/*
+/infra/.terraform.lock.hcl
