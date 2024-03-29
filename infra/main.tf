@@ -94,7 +94,7 @@ resource "azurerm_api_management_api_operation_policy" "onthisday-policy" {
                             var responseBody = context.Response.Body.As<JObject>();
                             var selectedArray = responseBody["selected"] as JArray;
                             var first = selectedArray.First() as JObject;
-                            var newResponse = new JObject(new JProperty("event", first["text"]));
+                            var newResponse = new JObject(new JProperty("event2", first["text"]));
                             return newResponse.ToString();
                         }</set-body>
                 </when>

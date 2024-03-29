@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 type Fact = {
-  event: string
+  event2: string
 }
 
 function App() {
@@ -18,9 +18,9 @@ function App() {
   const fetchFact = async () => {
     const month: string = `${new Date().getMonth() + 1}`
     const day: string = `${new Date().getDate() + 1}`
-    const res = await fetch(`https://onthisday-api.azure-api.net/selected/${month.padStart(2, '0')}/${day.padStart(2, '0')}`)
+    const res = await fetch(`https://wikimedia-tf.azure-api.net/selected/${month.padStart(2, '0')}/${day.padStart(2, '0')}`)
     const data: Fact = await res.json()
-    setFact(data.event)
+    setFact(data.event2)
   }
 
 
