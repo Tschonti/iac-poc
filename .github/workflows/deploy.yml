@@ -13,7 +13,7 @@ jobs:
         working-directory: "infra"
     runs-on: ubuntu-latest
     outputs:
-      swa_api_key: ${{ steps.output.outputs.stdout}}
+      swa_api_key: ${{ steps.apply.outputs.stdout}}
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -38,9 +38,9 @@ jobs:
         run: terraform apply -no-color
         continue-on-error: true
 
-      - name: Terraform Output
-        id: output
-        run: terraform output -raw swa_api_key
+      # - name: Terraform Output
+      #   id: output
+      #   run: terraform output -raw swa_api_key
 
   deploy_aswa:
     needs: terraform
